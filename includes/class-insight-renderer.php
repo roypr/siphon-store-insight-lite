@@ -159,6 +159,15 @@ class SILC_WIA_Insight_Renderer {
 				continue;
 			}
 
+			// When x_labels are provided and the raw x_value is numeric (e.g. month number),
+			// map it to the corresponding label (1→"Jan", 2→"Feb", etc.).
+			if (! empty($x_labels) && ctype_digit($x_value)) {
+				$x_index = intval($x_value) - 1; // 1-based to 0-based
+				if (isset($x_labels[$x_index])) {
+					$x_value = $x_labels[$x_index];
+				}
+			}
+
 			if ( ! isset( $groups[ $group_key ] ) ) {
 				$groups[ $group_key ] = array();
 			}
