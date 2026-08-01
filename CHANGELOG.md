@@ -2,6 +2,24 @@
 
 All notable changes to SILC WooInsight AI will be documented in this file.
 
+## [2.5.1] — 2026
+
+### Added
+- **CTE support in SQL validation** — queries that use common table expressions (`WITH name AS (...) SELECT ...`) are now accepted. Previously these valid queries were rejected by the validator; now they pass through just like ordinary SELECT queries.
+
+## [2.5.0] — 2026
+
+### Added
+- **WordPress 7.0.2 compatibility** — tested up to the latest WordPress release
+- **WooCommerce 10.9.4 compatibility** — tested up to the latest WooCommerce release
+
+### Changed
+- **Better AI decision making** — improved schema guidance and prompt handling for more accurate queries, chart types, and answers
+
+### Fixed
+- **WooCommerce legacy compatibility** — fixed issues when running with legacy (non-HPOS) order storage
+- General bug fixes across the dashboard and query pipeline
+
 ## [2.4.0] — 2025
 
 ### Added

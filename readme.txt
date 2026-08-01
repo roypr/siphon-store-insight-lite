@@ -6,7 +6,7 @@ Tested up to: 7.0.2
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 10.9.4
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -146,6 +146,9 @@ Results are cached (configurable TTL, default 1 hour) to avoid redundant API cal
 
 == Changelog ==
 
+= 2.5.1 =
+* 🧩 SQL validation now accepts common table expressions (CTEs) — queries using `WITH ... AS (...)` are no longer rejected
+
 = 2.5.0 =
 * 🐛 Bug fixes across the dashboard and query pipeline
 * 🧩 Improved WooCommerce legacy (non-HPOS) compatibility
@@ -190,6 +193,9 @@ Results are cached (configurable TTL, default 1 hour) to avoid redundant API cal
 * Documentation and core architecture
 
 == Upgrade Notice ==
+
+= 2.5.1 =
+SQL validation now accepts queries that use common table expressions (CTEs, written as `WITH ... AS (...)`). No breaking changes — all settings, history, and library items are preserved. Recommended update.
 
 = 2.5.0 =
 Bug fixes, improved legacy WooCommerce compatibility, and smarter AI decision making. No breaking changes — all settings, history, and library items are preserved. Recommended update.
