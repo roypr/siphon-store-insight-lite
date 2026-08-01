@@ -79,9 +79,9 @@ class SILC_WIA_SQL_Validator {
 		// Normalize for checking.
 		$upper = strtoupper( $sql );
 
-		// 1. Must start with SELECT.
-		if ( ! preg_match( '/^\s*SELECT\b/i', $sql ) ) {
-			$result['error'] = __( 'Only SELECT queries are allowed.', 'silc-wooinsight-ai' );
+		// 1. Must start with SELECT or WITH (CTE).
+		if ( ! preg_match( '/^\s*(SELECT|WITH)\b/i', $sql ) ) {
+			$result['error'] = __( 'Only SELECT and WITH (CTE) queries are allowed.', 'silc-wooinsight-ai' );
 			return $result;
 		}
 		// 2. Block forbidden keywords.
@@ -157,6 +157,18 @@ class SILC_WIA_SQL_Validator {
 		// Strip string literals to avoid false positives.
 		$stripped = preg_replace( "/'[^']*'/", "''", $sql );
 
+		// Collect CTE names defined via WITH ... AS ( ... ), so they're
+		// treated as local aliases rather than real tables.
+		$cte_names = array();
+		if ( preg_match( '/^\s*WITH\s+/i', $stripped ) ) {
+			preg_match_all( '/(\w+)\s*(?:\([^)]*\))?\s+AS\s*\(/i', $stripped, $cte_matches );
+			if ( ! empty( $cte_matches[1] ) ) {
+				foreach ( $cte_matches[1] as $cte ) {
+					$cte_names[] = $cte;
+				}
+			}
+		}
+
 		// Find all table references: FROM table, JOIN table, UPDATE table, INTO table.
 		preg_match_all(
 			'/(?:FROM|JOIN|INTO|TABLE|UPDATE|INSERT\s+INTO)\s+`?(\w+)`?\s*/i',
@@ -214,6 +226,11 @@ class SILC_WIA_SQL_Validator {
 
 				// Allow aliases that are single letters (a, b, p, pm, o, etc.).
 				if ( preg_match( '/^[a-z]{1,4}$/i', $tbl ) ) {
+					$matched = true;
+				}
+
+				// Allow CTE names defined in this query's WITH clause.
+				if ( in_array( $tbl, $cte_names, true ) ) {
 					$matched = true;
 				}
 			}
