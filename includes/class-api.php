@@ -298,23 +298,19 @@ class SILC_WIA_API {
 
 		// Build prompts.
 		$system_prompt = self::build_insight_system_prompt();
+		$system_prompt .= "\nHere is the WooCommerce database schema (table prefix included):";
+		$system_prompt .= "\n" . $schema_context;
+
 		$user_prompt   = self::build_insight_user_prompt( $question, $schema_context );
 
 		$model      = $settings['model'];
 		$is_reason  = self::is_reasoning_model( $model );
 		$max_tokens = self::get_effective_max_tokens( $model, self::INSIGHT_MAX_TOKENS );
 
-		if ( $is_reason ) {
-			// Reasoning models: fold system into user message.
-			$messages = array(
-				array( 'role' => 'user', 'content' => $system_prompt . "\n\n" . $user_prompt ),
-			);
-		} else {
-			$messages = array(
-				array( 'role' => 'system', 'content' => $system_prompt ),
-				array( 'role' => 'user',   'content' => $user_prompt ),
-			);
-		}
+		$messages = array(
+			array('role' => 'system', 'content' => $system_prompt),
+			array('role' => 'user',   'content' => $user_prompt),
+		);
 
 		$body = self::build_request_body( $model, $messages, $max_tokens, 0.2 );
 
@@ -392,7 +388,7 @@ class SILC_WIA_API {
 			. "SCOPE & SAFETY — hard rules:"
 			. "\n"
 			. "\n1. WOOCOMMERCE ONLY: orders, products, customers, coupons, categories, revenue, stock, taxes, shipping, order statuses, product ratings."
-			. "\n2. {{wpdb_prefix}}posts IS ALLOWED for WooCommerce post types only: product, product_variation, shop_coupon. Always filter by post_type."
+			. "\n2. {$GLOBALS['wpdb']->prefix}posts IS ALLOWED for WooCommerce post types only: product, product_variation, shop_coupon. Always filter by post_type."
 			. "\n3. SELECT ONLY: never INSERT/UPDATE/DELETE/DROP/ALTER/TRUNCATE/RENAME. No DDL, no multi-statement, no forbidden functions (SLEEP, BENCHMARK, OUTFILE, etc.)."
 			. "\n4. PII PROTECTION: limit PII columns (email, phone, address) to 50 rows. For bulk PII extraction, use PII_EXCEEDED error."
 			. "\n5. NO SELECT *: always enumerate columns."
@@ -400,19 +396,19 @@ class SILC_WIA_API {
 			. "\nREASONING PIPELINE — think in this order before writing SQL:"
 			. "\n  1. BUSINESS QUESTION — restate what the user wants in one line."
 			. "\n  2. BUSINESS INTENT — KPI / list / ranking / trend / comparison / distribution / breakdown / cohort."
-			. "\n  3. METRIC — revenue, orders, customers, AOV, stock, discount. Pick the correct column (beware homonyms: {{wpdb_prefix}}wc_product_meta_lookup.total_sales = units sold, NOT money)."
+			. "\n  3. METRIC — revenue, orders, customers, AOV, stock, discount. Pick the correct column (beware homonyms: {$GLOBALS['wpdb']->prefix}wc_product_meta_lookup.total_sales = units sold, NOT money)."
 			. "\n  4. DIMENSIONS — month, year, category, customer, country, payment method, product, status."
-			. "\n  5. FILTERS — order status, date range, product type. Always include parent_id = 0 on {{wpdb_prefix}}wc_order_stats unless the question is about refunds."
+			. "\n  5. FILTERS — order status, date range, product type. Always include parent_id = 0 on {$GLOBALS['wpdb']->prefix}wc_order_stats unless the question is about refunds."
 			. "\n  6. TIME PERIOD — resolve to concrete literal dates. Never use CURDATE(), NOW(), or non-deterministic functions."
-			. "\n  7. ENTITIES & TABLES — prefer analytical tables ({{wpdb_prefix}}wc_order_stats, {{wpdb_prefix}}wc_order_product_lookup, {{wpdb_prefix}}wc_customer_lookup). Use transactional tables only when necessary."
-			. "\n  8. JOINS — join only what is required. Verify no fan-out. LEFT JOIN for meta. Filter address_type when joining {{wpdb_prefix}}wc_order_addresses."
+			. "\n  7. ENTITIES & TABLES — prefer analytical tables ({$GLOBALS['wpdb']->prefix}wc_order_stats, {$GLOBALS['wpdb']->prefix}wc_order_product_lookup, {$GLOBALS['wpdb']->prefix}wc_customer_lookup). Use transactional tables only when necessary."
+			. "\n  8. JOINS — join only what is required. Verify no fan-out. LEFT JOIN for meta."
 			. "\n  9. CALCULATIONS — aggregations, GROUP BY, ORDER BY, aliases."
 			. "\n 10. SQL — construct the ENTIRE query from the completed plan. Use sargable date ranges (>= ''YYYY-MM-DD'' AND < ''YYYY-MM-DD''), never YEAR()/MONTH() in WHERE."
 			. "\n 11. VALIDATION — run the checklist below. If anything fails, discard SQL, fix plan, regenerate."
 			. "\n 12. PRESENTATION — choose output type + config from the SQL output shape. Presentation must NEVER influence the SQL."
 			. "\n"
 			. "\nINTERPRETATION RULES — determine business meaning before translating to SQL:"
-			. "\n- \"Revenue\" / \"Sales\" → SUM(total_sales) WHERE parent_id = 0 (on {{wpdb_prefix}}wc_order_stats)."
+			. "\n- \"Revenue\" / \"Sales\" → SUM(total_sales) WHERE parent_id = 0 (on {$GLOBALS['wpdb']->prefix}wc_order_stats)."
 			. "\n- \"Net sales\" → SUM(net_total) WHERE parent_id = 0."
 			. "\n- \"Net revenue after refunds\" → SUM(total_sales) without parent_id filter (refund rows are negative)."
 			. "\n- \"Top products\" → rank by quantity sold OR revenue per context."
@@ -428,10 +424,10 @@ class SILC_WIA_API {
 			. "\n"
 			. "\nVALIDATION CHECKLIST — every item must pass before output:"
 			. "\n- Business: Does the SQL answer the user's ACTUAL question?"
-			. "\n- Metric: Correct column? Check homonyms (total_sales = money on {{wpdb_prefix}}wc_order_stats, but = units sold on {{wpdb_prefix}}wc_product_meta_lookup)."
-			. "\n- Refunds: parent_id = 0 filter on {{wpdb_prefix}}wc_order_stats (unless question is about refunds)?"
-			. "\n- Grain: No fan-out? address_type filtered when joining {{wpdb_prefix}}wc_order_addresses? order_item_type filtered when joining {{wpdb_prefix}}woocommerce_order_items?"
-			. "\n- Schema: Every table/column exists? No phantom columns (e.g., type on {{wpdb_prefix}}wc_order_stats, total_sales on {{wpdb_prefix}}wc_orders)?"
+			. "\n- Metric: Correct column? Check homonyms (total_sales = money on {$GLOBALS['wpdb']->prefix}wc_order_stats, but = units sold on {$GLOBALS['wpdb']->prefix}wc_product_meta_lookup)."
+			. "\n- Refunds: parent_id = 0 filter on {$GLOBALS['wpdb']->prefix}wc_order_stats (unless question is about refunds)?"
+			. "\n- Grain: No fan-out? order_item_type filtered when joining {$GLOBALS['wpdb']->prefix}woocommerce_order_items?"
+			. "\n- Schema: Every table/column exists? No phantom columns (e.g., type on {$GLOBALS['wpdb']->prefix}wc_order_stats)?"
 			. "\n- Aggregation: GROUP BY correct? Every non-aggregate column in GROUP BY?"
 			. "\n- Dates: Sargable? Literal dates (no CURDATE/NOW)? Incomplete periods truncated for comparison?"
 			. "\n- Ordering: Time/month series ordered by number, not name?"
@@ -528,13 +524,7 @@ class SILC_WIA_API {
 	 * @return string
 	 */
 	private static function build_insight_user_prompt( string $question, string $schema_context ): string {
-		return 'Here is the WooCommerce database schema (table prefix included):'
-			. "
-
-" . $schema_context
-			. "
-
-User question: " . $question
+		return "User question: " . $question
 			. "
 
 Remember: If this question asks to modify, delete, insert, update, drop, or alter data in any way,"
