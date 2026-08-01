@@ -383,12 +383,30 @@ class SILC_WIA_Insights {
 	 * Re-execute a stored SQL query using the original insight config.
 	 * No AI call — just re-runs the SQL and re-renders with the same formatting.
 	 *
-	 * @param string $sql          The SQL to execute.
-	 * @param string $type         The result type (chart, list, answer).
-	 * @param array  $insight_data Stored insight config (chart_config, list_config, answer_text, etc.).
+	 * When called with a single array argument, it extracts sql/type/config from it.
+	 * When called with individual string/array args, it uses those directly.
+	 *
+	 * @param mixed  $sql_or_stored Either a string (SQL) or an array (full stored result).
+	 * @param string $type          The result type (chart, list, answer).
+	 * @param array  $insight_data  Stored insight config (chart_config, list_config, answer_text, etc.).
 	 * @return array The complete insight response.
 	 */
-	public static function re_execute_sql( string $sql, string $type, array $insight_data ): array {
+	public static function re_execute_sql( $sql_or_stored, string $type = 'answer', array $insight_data = array() ): array {
+		// Support being called with a single array (full stored result).
+		if ( is_array( $sql_or_stored ) ) {
+			$stored_result = $sql_or_stored;
+			$sql           = $stored_result['sql'] ?? '';
+			$type          = $stored_result['type'] ?? 'answer';
+			$insight_data  = array(
+				'chart_config' => $stored_result['chart_config'] ?? null,
+				'list_config'  => $stored_result['list_config'] ?? null,
+				'answer_text'  => $stored_result['answer_text'] ?? null,
+				'title'        => $stored_result['title'] ?? '',
+			);
+		} else {
+			$sql = $sql_or_stored;
+		}
+
 		// Validate SQL.
 		$validation = SILC_WIA_SQL_Validator::validate( $sql );
 		if ( ! $validation['valid'] ) {

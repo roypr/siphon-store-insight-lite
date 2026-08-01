@@ -135,6 +135,8 @@ class SILC_WIA_Ajax {
 			'answer_label'  => $insight['answer_label'] ?? null,
 			'empty'         => $insight['empty'] ?? null,
 			'empty_message' => $insight['empty_message'] ?? null,
+			'blocks'        => $insight['blocks'] ?? array(),
+			'queries'       => $insight['queries'] ?? array(),
 		);
 		// Keep max 10 latest entries.
 		if ( count( $history ) > 10 ) {
@@ -295,7 +297,8 @@ class SILC_WIA_Ajax {
 	/**
 	 * Handle: Re-execute a stored SQL query without calling AI.
 	 *
-	 * POST params: sql, type, chart_config (JSON), list_config (JSON), answer_text
+	 * POST params: result_json (JSON string of full stored result) OR
+	 *              legacy individual fields: sql, type, chart_config (JSON), list_config (JSON), answer_text
 	 * Response: Same structure as handle_generate_insight.
 	 */
 	public static function handle_execute_sql(): void {
@@ -303,6 +306,34 @@ class SILC_WIA_Ajax {
 			return;
 		}
 
+		$result_json = isset( $_POST['result_json'] ) ? wp_unslash( $_POST['result_json'] ) : '';
+
+		if ( ! empty( $result_json ) ) {
+			// New path: full stored result sent as JSON.
+			$stored_result = json_decode( $result_json, true );
+
+			if ( empty( $stored_result ) || ! is_array( $stored_result ) ) {
+				wp_send_json_error( array( 'message' => __( 'Invalid result data.', 'silc-wooinsight-ai' ) ) );
+				return;
+			}
+
+			require_once SILC_WIA_PATH . 'includes/class-insights.php';
+
+			$result = SILC_WIA_Insights::re_execute_sql( $stored_result );
+
+			if ( ! $result['success'] ) {
+				wp_send_json_error( array(
+					'message' => $result['error'] ?? __( 'Failed to execute SQL.', 'silc-wooinsight-ai' ),
+					'sql'     => $result['sql'] ?? '',
+				) );
+				return;
+			}
+
+			wp_send_json_success( $result );
+			return;
+		}
+
+		// Legacy fallback: individual fields.
 		$sql = isset( $_POST['sql'] ) ? wp_unslash( $_POST['sql'] ) : '';
 		$sql = trim( $sql );
 
