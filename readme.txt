@@ -2,10 +2,11 @@
 Contributors: silc
 Tags: woocommerce, analytics, reports, sql, ai, charts, business-intelligence
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 7.0.2
 Requires PHP: 7.4
 WC requires at least: 8.0
-Stable tag: 2.4.0
+WC tested up to: 10.9.4
+Stable tag: 2.5.0
 License: GPL v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +146,12 @@ Results are cached (configurable TTL, default 1 hour) to avoid redundant API cal
 
 == Changelog ==
 
+= 2.5.0 =
+* 🐛 Bug fixes across the dashboard and query pipeline
+* 🧩 Improved WooCommerce legacy (non-HPOS) compatibility
+* 🧠 Better AI decision making for more accurate queries and visualizations
+* ✅ Tested with WordPress 7.0.2 and WooCommerce 10.9.4
+
 = 2.3.1 =
 * 🐛 Bug fixes across chart rendering, SQL execution display, and responsive layout
 * 🎨 Visual improvements to sidebar navigation, panel headers, and mobile breakpoints
@@ -183,6 +190,9 @@ Results are cached (configurable TTL, default 1 hour) to avoid redundant API cal
 * Documentation and core architecture
 
 == Upgrade Notice ==
+
+= 2.5.0 =
+Bug fixes, improved legacy WooCommerce compatibility, and smarter AI decision making. No breaking changes — all settings, history, and library items are preserved. Recommended update.
 
 = 2.3.1 =
 Bug fixes and visual improvements. No breaking changes — all existing settings, history, and library items are preserved. Recommended update for a smoother experience.
