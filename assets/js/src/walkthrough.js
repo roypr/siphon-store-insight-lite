@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Walkthrough / Onboarding Tour
+ * Store Insights with AI Lite — Walkthrough / Onboarding Tour
  *
  * A simple guided tour that highlights key UI elements for first-time users.
  * Uses localStorage to remember dismissal. No external dependencies.

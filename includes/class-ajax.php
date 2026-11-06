@@ -44,12 +44,12 @@ class SILC_WIA_Ajax {
 	 */
 	private static function verify(): bool {
 		if ( ! check_ajax_referer( self::NONCE_ACTION, 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'siphon-store-insight-lite' ) ) );
 			return false;
 		}
 
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'siphon-store-insight-lite' ) ) );
 			return false;
 		}
 
@@ -95,7 +95,7 @@ class SILC_WIA_Ajax {
 		$question = trim( $question );
 
 		if ( empty( $question ) ) {
-			wp_send_json_error( array( 'message' => __( 'No question provided.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No question provided.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
@@ -105,7 +105,7 @@ class SILC_WIA_Ajax {
 		
 		if ( ! $insight['success'] ) {
 			wp_send_json_error( array(
-				'message'    => $insight['error'] ?? __( 'Failed to generate insight.', 'silc-wooinsight-ai' ),
+				'message'    => $insight['error'] ?? __( 'Failed to generate insight.', 'siphon-store-insight-lite' ),
 				'error_code' => $insight['error_code'] ?? '',
 				'question'   => $question,
 			) );
@@ -186,7 +186,7 @@ class SILC_WIA_Ajax {
 		$question = trim( $question );
 
 		if ( empty( $question ) ) {
-			wp_send_json_error( array( 'message' => __( 'No question provided.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No question provided.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
@@ -196,7 +196,7 @@ class SILC_WIA_Ajax {
 
 		if ( ! $insight['success'] ) {
 			wp_send_json_error( array(
-				'message'    => $insight['error'] ?? __( 'Failed to regenerate insight.', 'silc-wooinsight-ai' ),
+				'message'    => $insight['error'] ?? __( 'Failed to regenerate insight.', 'siphon-store-insight-lite' ),
 				'error_code' => $insight['error_code'] ?? '',
 				'question'   => $question,
 			) );
@@ -290,7 +290,7 @@ class SILC_WIA_Ajax {
 		delete_option( 'silc_wia_insight_history' );
 
 		wp_send_json_success( array(
-			'message' => __( 'Insight history cleared.', 'silc-wooinsight-ai' ),
+			'message' => __( 'Insight history cleared.', 'siphon-store-insight-lite' ),
 		) );
 	}
 
@@ -313,7 +313,7 @@ class SILC_WIA_Ajax {
 			$stored_result = json_decode( $result_json, true );
 
 			if ( empty( $stored_result ) || ! is_array( $stored_result ) ) {
-				wp_send_json_error( array( 'message' => __( 'Invalid result data.', 'silc-wooinsight-ai' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Invalid result data.', 'siphon-store-insight-lite' ) ) );
 				return;
 			}
 
@@ -323,7 +323,7 @@ class SILC_WIA_Ajax {
 
 			if ( ! $result['success'] ) {
 				wp_send_json_error( array(
-					'message' => $result['error'] ?? __( 'Failed to execute SQL.', 'silc-wooinsight-ai' ),
+					'message' => $result['error'] ?? __( 'Failed to execute SQL.', 'siphon-store-insight-lite' ),
 					'sql'     => $result['sql'] ?? '',
 				) );
 				return;
@@ -338,7 +338,7 @@ class SILC_WIA_Ajax {
 		$sql = trim( $sql );
 
 		if ( empty( $sql ) ) {
-			wp_send_json_error( array( 'message' => __( 'No SQL query provided.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'No SQL query provided.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
@@ -372,7 +372,7 @@ class SILC_WIA_Ajax {
 
 		if ( ! $result['success'] ) {
 			wp_send_json_error( array(
-				'message' => $result['error'] ?? __( 'Failed to execute SQL.', 'silc-wooinsight-ai' ),
+				'message' => $result['error'] ?? __( 'Failed to execute SQL.', 'siphon-store-insight-lite' ),
 				'sql'     => $sql,
 			) );
 			return;

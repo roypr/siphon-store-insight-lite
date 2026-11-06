@@ -1,4 +1,4 @@
-# SILC WooInsight AI
+# Store Insights with AI Lite
 
 **Natural language to data visualization for WooCommerce.**
 
@@ -6,7 +6,7 @@ Ask plain-English questions — _"What were my best selling products last month?
 
 ---
 
-## ✨ Why WooInsight AI?
+## ✨ Why Store Insights with AI Lite?
 
 ### 🗣️ Natural Language → Data Visualization
 
@@ -36,7 +36,7 @@ Stop digging through admin panels and exporting CSVs. Each insight renders in on
 ## 🚀 Quick Start
 
 1. Install the plugin
-2. Go to **WooCommerce → WooInsight AI**
+2. Go to **WooCommerce → Store Insights with AI Lite**
 3. (Optional) Add your API key in the ⚙️ Settings panel
 4. Start asking questions — or browse the built-in Library
 
@@ -165,5 +165,5 @@ GPL v2 or later. See [LICENSE](./LICENSE) for full text.
 
 ## 🔗 Links
 
-- **Plugin URI**: [GitHub](https://github.com/roypr/silc-wooinsight-ai)
+- **Plugin URI**: [GitHub](https://github.com/roypr/siphon-store-insight-lite)
 - **Chart.js**: [chartjs.org](https://www.chartjs.org/) (MIT)

@@ -47,10 +47,10 @@ class SILC_WIA_Admin {
 	public static function add_menu_pages(): void {
 		self::$page_hook = add_submenu_page(
 			'woocommerce',
-			__( 'WooInsight AI', 'silc-wooinsight-ai' ),
-			__( 'WooInsight AI', 'silc-wooinsight-ai' ),
+			__( 'Store Insights with AI Lite', 'siphon-store-insight-lite' ),
+			__( 'Store Insights with AI Lite', 'siphon-store-insight-lite' ),
 			'manage_woocommerce',
-			'silc-wooinsight-ai',
+			'siphon-store-insight-lite',
 			array( __CLASS__, 'render_page' )
 		);
 	}
@@ -121,7 +121,7 @@ class SILC_WIA_Admin {
 	public static function render_page(): void {
 		?>
 		<div class="wrap silc-wia-wrap">
-			<h1 class="screen-reader-text"><?php esc_html_e( 'WooInsight AI', 'silc-wooinsight-ai' ); ?></h1>
+			<h1 class="screen-reader-text"><?php esc_html_e( 'Store Insights with AI Lite', 'siphon-store-insight-lite' ); ?></h1>
 			<div id="silc-wia-dashboard"></div>
 		</div>
 		<?php
@@ -132,12 +132,12 @@ class SILC_WIA_Admin {
 	 */
 	public static function handle_test_api(): void {
 		if ( ! check_ajax_referer( SILC_WIA_Ajax::NONCE_ACTION, 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
@@ -156,19 +156,19 @@ class SILC_WIA_Admin {
 	 */
 	public static function handle_save_settings(): void {
 		if ( ! check_ajax_referer( SILC_WIA_Ajax::NONCE_ACTION, 'nonce', false ) ) {
-			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
 		$input = isset( $_POST['settings'] ) ? json_decode( wp_unslash( $_POST['settings'] ), true ) : array();
 
 		if ( ! is_array( $input ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid settings data.', 'silc-wooinsight-ai' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid settings data.', 'siphon-store-insight-lite' ) ) );
 			return;
 		}
 
@@ -176,7 +176,7 @@ class SILC_WIA_Admin {
 		update_option( self::SETTINGS_OPTION, $sanitized );
 
 		wp_send_json_success( array(
-			'message'          => __( 'Settings saved.', 'silc-wooinsight-ai' ),
+			'message'          => __( 'Settings saved.', 'siphon-store-insight-lite' ),
 			'has_api_key'      => ! empty( $sanitized['api_key'] ),
 			'is_reasoning'     => SILC_WIA_API::is_reasoning_model( $sanitized['model'] ?? '' ),
 		) );
@@ -272,38 +272,38 @@ class SILC_WIA_Admin {
 				'cache_ttl'   => SILC_WIA_API::DEFAULT_CACHE_TTL,
 			),
 			'l10n' => array(
-				'askQuestion'        => __( 'Ask anything about your WooCommerce store...', 'silc-wooinsight-ai' ),
-				'getInsight'         => __( 'Get AI Insight', 'silc-wooinsight-ai' ),
-				'generatingInsight'  => __( 'Generating insight...', 'silc-wooinsight-ai' ),
-				'enterQuestion'      => __( 'Enter your question in plain English', 'silc-wooinsight-ai' ),
-				'results'            => __( 'Results', 'silc-wooinsight-ai' ),
-				'noResults'          => __( 'No results found.', 'silc-wooinsight-ai' ),
-				'errorOccurred'      => __( 'Something went wrong:', 'silc-wooinsight-ai' ),
-				'apiNotConfigured'   => __( 'API not configured', 'silc-wooinsight-ai' ),
-				'apiReady'           => __( 'AI Ready', 'silc-wooinsight-ai' ),
-				'tryAsking'          => __( 'Try asking:', 'silc-wooinsight-ai' ),
-				'clearHistory'       => __( 'Clear', 'silc-wooinsight-ai' ),
-				'noHistory'          => __( 'No past insights yet.', 'silc-wooinsight-ai' ),
-				'openInNewTab'       => __( 'Open in new tab', 'silc-wooinsight-ai' ),
-				'noInsightHistory'   => __( 'No insight history yet.', 'silc-wooinsight-ai' ),
-				'save'               => __( 'Save Settings', 'silc-wooinsight-ai' ),
-				'saving'             => __( 'Saving...', 'silc-wooinsight-ai' ),
-				'saved'              => __( 'Settings saved!', 'silc-wooinsight-ai' ),
-				'testConnection'     => __( 'Test Connection', 'silc-wooinsight-ai' ),
-				'testing'            => __( 'Testing...', 'silc-wooinsight-ai' ),
-				'connectionOk'       => __( 'Connection successful!', 'silc-wooinsight-ai' ),
-				'connectionFail'     => __( 'Connection failed.', 'silc-wooinsight-ai' ),
-				'settingsApiUrl'     => __( 'API URL', 'silc-wooinsight-ai' ),
-				'settingsApiKey'     => __( 'API Key', 'silc-wooinsight-ai' ),
-				'settingsModel'      => __( 'Model', 'silc-wooinsight-ai' ),
-				'settingsMaxTokens'  => __( 'Max Tokens', 'silc-wooinsight-ai' ),
-				'settingsTemp'       => __( 'Temperature', 'silc-wooinsight-ai' ),
-				'settingsCache'      => __( 'Cache Duration', 'silc-wooinsight-ai' ),
-				'sqlDetails'         => __( 'SQL & Details', 'silc-wooinsight-ai' ),
-				'history'            => __( 'History', 'silc-wooinsight-ai' ),
-				'library'            => __( 'Library', 'silc-wooinsight-ai' ),
-				'settings'           => __( 'Settings', 'silc-wooinsight-ai' ),
-				'refresh'            => __( 'Refresh', 'silc-wooinsight-ai' ),
+				'askQuestion'        => __( 'Ask anything about your WooCommerce store...', 'siphon-store-insight-lite' ),
+				'getInsight'         => __( 'Get AI Insight', 'siphon-store-insight-lite' ),
+				'generatingInsight'  => __( 'Generating insight...', 'siphon-store-insight-lite' ),
+				'enterQuestion'      => __( 'Enter your question in plain English', 'siphon-store-insight-lite' ),
+				'results'            => __( 'Results', 'siphon-store-insight-lite' ),
+				'noResults'          => __( 'No results found.', 'siphon-store-insight-lite' ),
+				'errorOccurred'      => __( 'Something went wrong:', 'siphon-store-insight-lite' ),
+				'apiNotConfigured'   => __( 'API not configured', 'siphon-store-insight-lite' ),
+				'apiReady'           => __( 'AI Ready', 'siphon-store-insight-lite' ),
+				'tryAsking'          => __( 'Try asking:', 'siphon-store-insight-lite' ),
+				'clearHistory'       => __( 'Clear', 'siphon-store-insight-lite' ),
+				'noHistory'          => __( 'No past insights yet.', 'siphon-store-insight-lite' ),
+				'openInNewTab'       => __( 'Open in new tab', 'siphon-store-insight-lite' ),
+				'noInsightHistory'   => __( 'No insight history yet.', 'siphon-store-insight-lite' ),
+				'save'               => __( 'Save Settings', 'siphon-store-insight-lite' ),
+				'saving'             => __( 'Saving...', 'siphon-store-insight-lite' ),
+				'saved'              => __( 'Settings saved!', 'siphon-store-insight-lite' ),
+				'testConnection'     => __( 'Test Connection', 'siphon-store-insight-lite' ),
+				'testing'            => __( 'Testing...', 'siphon-store-insight-lite' ),
+				'connectionOk'       => __( 'Connection successful!', 'siphon-store-insight-lite' ),
+				'connectionFail'     => __( 'Connection failed.', 'siphon-store-insight-lite' ),
+				'settingsApiUrl'     => __( 'API URL', 'siphon-store-insight-lite' ),
+				'settingsApiKey'     => __( 'API Key', 'siphon-store-insight-lite' ),
+				'settingsModel'      => __( 'Model', 'siphon-store-insight-lite' ),
+				'settingsMaxTokens'  => __( 'Max Tokens', 'siphon-store-insight-lite' ),
+				'settingsTemp'       => __( 'Temperature', 'siphon-store-insight-lite' ),
+				'settingsCache'      => __( 'Cache Duration', 'siphon-store-insight-lite' ),
+				'sqlDetails'         => __( 'SQL & Details', 'siphon-store-insight-lite' ),
+				'history'            => __( 'History', 'siphon-store-insight-lite' ),
+				'library'            => __( 'Library', 'siphon-store-insight-lite' ),
+				'settings'           => __( 'Settings', 'siphon-store-insight-lite' ),
+				'refresh'            => __( 'Refresh', 'siphon-store-insight-lite' ),
 			),
 		) );
 

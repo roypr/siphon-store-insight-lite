@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Result renderers (chart, list, answer)
+ * Store Insights with AI Lite — Result renderers (chart, list, answer)
  *
  * @package SILC_WooInsight_AI
  */

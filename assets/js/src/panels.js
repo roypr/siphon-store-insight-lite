@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Side panel renderers (SQL, History, Library, Suggested)
+ * Store Insights with AI Lite — Side panel renderers (SQL, History, Library, Suggested)
  *
  * @package SILC_WooInsight_AI
  */

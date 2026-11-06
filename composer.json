@@ -1,5 +1,5 @@
 {
-	"name": "silc/silc-wooinsight-ai",
+	"name": "silc/siphon-store-insight-lite",
 	"description": "Natural language to SQL query tool for WooCommerce.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",

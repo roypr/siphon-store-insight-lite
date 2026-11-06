@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Utility functions and constants
+ * Store Insights with AI Lite — Utility functions and constants
  *
  * @package SILC_WooInsight_AI
  */

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Plugin Name: SILC WooInsight AI
- * Plugin URI:  https://github.com/roypr/silc-wooinsight-ai
+ * Plugin Name: Store Insights with AI Lite
+ * Plugin URI:  https://github.com/roypr/siphon-store-insight-lite
  * Description: Natural language to SQL query tool for WooCommerce. Uses any OpenAI-compatible API (BYOK) to convert plain English questions into SQL queries against WooCommerce data.
- * Version:     2.5.1
+ * Version:     3.0.0
  * Author:      Roy Parthapratim
  * Author URI:  https://github.com/roypr
- * Text Domain: silc-wooinsight-ai
+ * Text Domain: siphon-store-insight-lite
  * Domain Path: /languages
  * Requires PHP: 7.4
  * Requires at least: 6.0
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants.
-define( 'SILC_WIA_VERSION', '2.5.1' );
+define( 'SILC_WIA_VERSION', '3.0.0' );
 define( 'SILC_WIA_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SILC_WIA_URL', plugin_dir_url( __FILE__ ) );
 define( 'SILC_WIA_BASENAME', plugin_basename( __FILE__ ) );
@@ -43,7 +43,7 @@ add_action( 'plugins_loaded', function () {
 	// Ensure WooCommerce is active.
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		add_action( 'admin_notices', function () {
-			$message = __( 'SILC WooInsight AI requires WooCommerce to be installed and activated.', 'silc-wooinsight-ai' );
+			$message = __( 'Store Insights with AI Lite requires WooCommerce to be installed and activated.', 'siphon-store-insight-lite' );
 			printf( '<div class="notice notice-warning"><p>%s</p></div>', esc_html( $message ) );
 		} );
 		return;
@@ -75,9 +75,9 @@ add_action( 'init', function () {
 	}
 
 	$update_checker = YahnisElsts\PluginUpdateChecker\v5p7\PucFactory::buildUpdateChecker(
-		'https://github.com/roypr/silc-wooinsight-ai',
-		SILC_WIA_PATH . 'silc-wooinsight-ai.php',
-		'silc-wooinsight-ai'
+		'https://github.com/roypr/siphon-store-insight-lite',
+		SILC_WIA_PATH . 'siphon-store-insight-lite.php',
+		'siphon-store-insight-lite'
 	);
 
 	// Use GitHub releases for update metadata.
@@ -90,12 +90,12 @@ add_action( 'init', function () {
 register_activation_hook( __FILE__, function () {
 	if ( version_compare( PHP_VERSION, '7.4', '<' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_die( esc_html__( 'SILC WooInsight AI requires PHP 7.4 or higher.', 'silc-wooinsight-ai' ) );
+		wp_die( esc_html__( 'Store Insights with AI Lite requires PHP 7.4 or higher.', 'siphon-store-insight-lite' ) );
 	}
 
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		deactivate_plugins( plugin_basename( __FILE__ ) );
-		wp_die( esc_html__( 'SILC WooInsight AI requires WooCommerce to be installed.', 'silc-wooinsight-ai' ) );
+		wp_die( esc_html__( 'Store Insights with AI Lite requires WooCommerce to be installed.', 'siphon-store-insight-lite' ) );
 	}
 } );
 
@@ -113,8 +113,8 @@ register_deactivation_hook( __FILE__, function () {
 add_filter( 'plugin_action_links_' . SILC_WIA_BASENAME, function ( $links ) {
 	$dashboard_link = sprintf(
 		'<a href="%s">%s</a>',
-		esc_url( admin_url( 'admin.php?page=silc-wooinsight-ai' ) ),
-		esc_html__( 'Dashboard', 'silc-wooinsight-ai' )
+		esc_url( admin_url( 'admin.php?page=siphon-store-insight-lite' ) ),
+		esc_html__( 'Dashboard', 'siphon-store-insight-lite' )
 	);
 	array_unshift( $links, $dashboard_link );
 

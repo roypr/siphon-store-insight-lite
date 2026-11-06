@@ -617,16 +617,16 @@ class SILC_WIA_Insight_Renderer {
 	 * @return array Empty answer data.
 	 */
 	private static function get_empty_answer( string $question ): array {
-		$message = __( 'No results found.', 'silc-wooinsight-ai' );
+		$message = __( 'No results found.', 'siphon-store-insight-lite' );
 
 		if ( preg_match( '/last\s+(week|month|year|7\s*days|30\s*days)/i', $question ) ) {
-			$message = __( 'No data found for the specified period.', 'silc-wooinsight-ai' );
+			$message = __( 'No data found for the specified period.', 'siphon-store-insight-lite' );
 		} elseif ( preg_match( '/pending|cancelled|refunded|failed/i', $question ) ) {
-			$message = __( 'No orders found with that status.', 'silc-wooinsight-ai' );
+			$message = __( 'No orders found with that status.', 'siphon-store-insight-lite' );
 		}
 
 		return array(
-			'label'     => __( 'No data', 'silc-wooinsight-ai' ),
+			'label'     => __( 'No data', 'siphon-store-insight-lite' ),
 			'value'     => '0',
 			'formatted' => $message,
 			'raw'       => null,

@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI - Chart.js Renderer
+ * Store Insights with AI Lite - Chart.js Renderer
  *
  * Vanilla JS wrapper around Chart.js with proper lifecycle management
  * and rich visual styling.

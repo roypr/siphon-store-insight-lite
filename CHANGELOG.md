@@ -1,6 +1,9 @@
 # Changelog
 
-All notable changes to SILC WooInsight AI will be documented in this file.
+All notable changes to Store Insights with AI Lite will be documented in this file.
+
+## [3.0.0] — Nov 2026
+- **Identity change** — Plugin identity changed from WooInsight AI to Store Insights with AI Lite. Change made to comply with woocommerce branding guideline.
 
 ## [2.5.1] — 2026
 

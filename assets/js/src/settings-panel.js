@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Settings panel renderer
+ * Store Insights with AI Lite — Settings panel renderer
  *
  * @package SILC_WooInsight_AI
  */

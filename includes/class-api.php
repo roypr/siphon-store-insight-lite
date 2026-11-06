@@ -215,7 +215,7 @@ class SILC_WIA_API {
 			return array(
 				'success' => false,
 				'data'    => null,
-				'error'   => __( 'API key is not configured. Please go to Settings and add your API key.', 'silc-wooinsight-ai' ),
+				'error'   => __( 'API key is not configured. Please go to Settings and add your API key.', 'siphon-store-insight-lite' ),
 			);
 		}
 
@@ -239,7 +239,7 @@ class SILC_WIA_API {
 				'data'    => null,
 				'error'   => sprintf(
 					/* translators: %s: error message */
-					__( 'API request failed: %s', 'silc-wooinsight-ai' ),
+					__( 'API request failed: %s', 'siphon-store-insight-lite' ),
 					$response->get_error_message()
 				),
 			);
@@ -252,7 +252,7 @@ class SILC_WIA_API {
 		if ( $status_code !== 200 ) {
 			$error_msg = isset( $data['error']['message'] ) ? $data['error']['message'] : sprintf(
 				/* translators: %d: HTTP status code */
-				__( 'API returned HTTP %d', 'silc-wooinsight-ai' ),
+				__( 'API returned HTTP %d', 'siphon-store-insight-lite' ),
 				$status_code
 			);
 			return array(
@@ -292,7 +292,7 @@ class SILC_WIA_API {
 			return array(
 				'success' => false,
 				'insight' => null,
-				'error'   => __( 'API key is not configured. Please go to Settings and add your API key.', 'silc-wooinsight-ai' ),
+				'error'   => __( 'API key is not configured. Please go to Settings and add your API key.', 'siphon-store-insight-lite' ),
 			);
 		}
 
@@ -336,7 +336,7 @@ class SILC_WIA_API {
 			return array(
 				'success' => false,
 				'insight' => null,
-				'error'   => __( 'API returned an empty response.', 'silc-wooinsight-ai' ),
+				'error'   => __( 'API returned an empty response.', 'siphon-store-insight-lite' ),
 			);
 		}
 
@@ -365,7 +365,7 @@ class SILC_WIA_API {
 			return array(
 				'success' => false,
 				'insight' => null,
-				'error'   => __( 'Could not parse insight JSON from the API response.', 'silc-wooinsight-ai' ),
+				'error'   => __( 'Could not parse insight JSON from the API response.', 'siphon-store-insight-lite' ),
 			);
 		}
 
@@ -618,7 +618,7 @@ Otherwise, return ONLY valid JSON with the SQL query, output type, and configura
 		if ( empty( $settings['api_key'] ) ) {
 			return array(
 				'success' => false,
-				'message' => __( 'No API key configured.', 'silc-wooinsight-ai' ),
+				'message' => __( 'No API key configured.', 'siphon-store-insight-lite' ),
 			);
 		}
 
@@ -670,7 +670,7 @@ Otherwise, return ONLY valid JSON with the SQL query, output type, and configura
 
 		return array(
 			'success' => true,
-			'message' => __( 'Connection successful!', 'silc-wooinsight-ai' ),
+			'message' => __( 'Connection successful!', 'siphon-store-insight-lite' ),
 		);
 	}
 }

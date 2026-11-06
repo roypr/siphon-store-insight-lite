@@ -1,5 +1,5 @@
 /**
- * SILC WooInsight AI — Main Entry Point
+ * Store Insights with AI Lite — Main Entry Point
  *
  * @package SILC_WooInsight_AI
  */
@@ -593,9 +593,9 @@ function WooInsightDashboard() {
 				el('img', {
 					className: 'silc-wia-logo-icon',
 					src: pluginUrl + 'assets/img/chart.svg',
-					alt: 'WooInsight AI',
+					alt: 'Store Insights with AI Lite',
 				}),
-				'WooInsight AI'
+				'Store Insights with AI Lite'
 			),
 			el('span', { className: 'silc-wia-topbar-model' }, settings.model || defaults.model),
 			el('div', { className: 'silc-wia-topbar-spacer' }),
